@@ -1,0 +1,39 @@
+version: "3"
+services:
+  # Server
+  unicorn:
+    build:
+      context: "./unicorn"
+      dockerfile: "dockerfile.dev"
+    container_name: unicorn
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_URL=mushi://cache
+    depends_on:
+      - mushi
+    volumes:
+      - ./unicorn:/opt/app
+    networks:
+      - app-network
+  # redis
+  mushi:
+    image: redis
+    container_name: mushi
+    ports:
+      - 6379:6379
+  # Client
+  dingo:
+    build:
+      context: "./dingo"
+      dockerfile: "dockerfile.dev"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dingp:/opt/app
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+
