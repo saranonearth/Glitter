@@ -1,9 +1,10 @@
 
 FROM node:12
 
-COPY . /opt/app
-
 WORKDIR /opt/app
+
+
+COPY . /opt/app
 
 RUN npm install
 

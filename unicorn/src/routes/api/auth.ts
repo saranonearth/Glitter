@@ -1,3 +1,5 @@
+
+//Module imports
 import bcrypt from "bcryptjs";
 import config from "config";
 import { Router, Response } from "express";
@@ -5,6 +7,7 @@ import { check, validationResult } from "express-validator/check";
 import HttpStatusCodes from "http-status-codes";
 import jwt from "jsonwebtoken";
 
+//Relative imports
 import auth from "../../middleware/auth";
 import Payload from "../../types/Payload";
 import Request from "../../types/Request";

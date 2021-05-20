@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema } from "mongoose";
+import mongoose, { Document, Model, model, Schema } from "mongoose";
 
 /**
  * Interface to model the User Schema for TypeScript.
@@ -11,6 +11,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   avatar: string;
+  followers: Array<mongoose.Types.ObjectId>
 }
 
 const userSchema: Schema = new Schema({
@@ -26,6 +27,7 @@ const userSchema: Schema = new Schema({
   avatar: {
     type: String
   },
+  followers: [{ type: Schema.Types.ObjectId }],
   username: {
     type: String,
     required: true,

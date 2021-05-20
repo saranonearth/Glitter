@@ -1,7 +1,10 @@
+//Module imports
 import bodyParser from "body-parser";
 import express from "express";
 import { Response } from 'express'
 
+
+//Relative imports
 import Request from './types/Request'
 import connectDB from "../config/database";
 import auth from "./routes/api/auth";
@@ -22,8 +25,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // @desc    Test Base API
 // @access  Public
 app.get("/", (_req: Request, res: Response) => {
-  res.send("API Running");
+  res.json({ status: "Glitter api running" });
 });
+
 
 app.use("/api/auth", auth);
 app.use("/api/user", user);

@@ -1,28 +1,55 @@
 
+
 //Modules
 import { Router, Response } from "express";
 import { check, validationResult } from "express-validator/check";
-import HttpStatusCodes from "http-status-codes";
+import mongoose from "mongoose"
 
 
 
 
 //Relative imports
 import { ITweet } from './../../models/Tweet';
+import { IUser } from './../../models/User';
 import auth from "../../middleware/auth";
 import Request from "../../types/Request";
 import Tweet from '../../models/Tweet';
-import JSONResponse from '../..//util/ResponseHandler';
+import JSONResponse from '../../util/ResponseHandler';
+
+
 
 
 
 const router: Router = Router();
 
-// @route   GET api/tweet/:id
+// @route   GET api/tweet
 // @desc    Get tweets of a user
 // @access  Private
 router.get("/", auth, async (req: Request, res: Response) => {
+
     try {
+
+        let followers: Array<mongoose.Types.ObjectId> = req.body.followers;
+
+        if (!followers) {
+            return JSONResponse.badRequest(req, res, "", { errors: [{ error: "Please provide followers" }] });
+        }
+
+        //adding current user to have the user's tweets too in the feed
+        followers.push(mongoose.Types.ObjectId(req.userId));
+
+
+
+        const tweetsOfFollowers: ITweet[] = await Tweet.find({
+            'postedBy': {
+                $in: [...followers]
+            }
+        })
+
+        console.log(tweetsOfFollowers);
+
+        return JSONResponse.success(req, res, "", tweetsOfFollowers);
+
 
     } catch (err) {
         JSONResponse.serverError(req, res, "Server Error", {})
@@ -30,9 +57,9 @@ router.get("/", auth, async (req: Request, res: Response) => {
 });
 
 
-// @route   POST api/auth
-// @desc    Login user and get token
-// @access  Public
+// @route   POST api/tweet
+// @desc    Post tweet of a user
+// @access  Private
 router.post(
     "/",
     auth,
@@ -56,7 +83,7 @@ router.post(
             await tweet.save();
 
 
-            return res.status(HttpStatusCodes.OK).json(tweet);
+            return JSONResponse.success(req, res, "", tweet);
 
         } catch (err) {
             JSONResponse.serverError(req, res, "Server Error", {})

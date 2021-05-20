@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema } from "mongoose";
+import mongoose, { Document, Model, model, Schema } from "mongoose";
 
 /**
  * Interface to model the User Schema for TypeScript.
@@ -6,11 +6,17 @@ import { Document, Model, model, Schema } from "mongoose";
  */
 export interface ITweet extends Document {
     tweetText: string;
+    postedBy: mongoose.Types.ObjectId
 }
 
 const tweetSchema: Schema = new Schema({
     tweetText: {
         type: String,
+        required: true
+    },
+    postedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'Tweet',
         required: true
     }
 }, {
