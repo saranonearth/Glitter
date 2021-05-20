@@ -1,7 +1,7 @@
 //Module imports
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
-
+ import { ToastContainer} from 'react-toastify';
 
 //Relative imports
 import Feed from './feed'
@@ -11,6 +11,8 @@ import Home from './components/Home';
 import Reducer from './store/Reducer';
 import Store from './store/Store';
 
+//Style
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App: React.FC = () => {
@@ -19,14 +21,14 @@ const App: React.FC = () => {
 
   return (
     <>
+    <ToastContainer newestOnTop autoClose={2000} />
     <Store.Provider value={{state,dispatch}}>
-
      <BrowserRouter>
       <Switch>
-      <Route path="/" component={Home} />
+      <Route exact path="/" component={Home} />
       <Route exact path="/feed" component={Feed} />
-      <Route exact path="/signin" component={Signin} />
-      <Route exact path="/signin" component={Signup} />
+      <Route exact path="/login" component={Signin} />
+      <Route exact path="/signup" component={Signup} />
       </Switch>
      </BrowserRouter>
     </Store.Provider>
