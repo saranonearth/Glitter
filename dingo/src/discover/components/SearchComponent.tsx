@@ -3,6 +3,7 @@ import React from 'react'
 import Loader from 'react-loader-spinner';
 
 import { User } from '../../types';
+import useFollow from '../hooks/useFollow';
 import useSearchUser from '../hooks/useUserSearch';
 
 interface Props {
@@ -11,27 +12,42 @@ interface Props {
 
 const SearchComponent = (props: Props) => {
 
-    const [param, setParam] = React.useState<string | null>(null);
+    const [param, setParam] = React.useState<string | null>("");
     const [data,loading, searchUser, handleDataSetting] = useSearchUser();
+    const [follow] = useFollow();
 
-    const handleSearchInputChange=(e:any)=>{
+
+    const updateQuery = () => {
+        searchUser(param);
+    }
+
+    const delayedQuery = React.useCallback(_.debounce(updateQuery, 1000), [param]);
+
+    const onChange = (e:any) => {
         setParam(e.target.value);
         if(e.target.value===""){
             handleDataSetting([]);
             return;
-        }
-        searchUser(e.target.value);
-        
-    }
+        }   
+    };
+    React.useEffect(() => {
+   delayedQuery();
 
-    console.log(loading);
-    console.log(data);
+   // Cancel the debounce on useEffect cleanup.
+   return delayedQuery.cancel;
+    }, [param, delayedQuery]);
+
+    const handleFollowRequest = (id: string) => {
+        if(id === "") return;
+        console.log("here", id);
+        follow(id)
+    }
 
 
     const renderStrip = (e:User) =>   <div key={_.get(e,'_id',Math.random())} className="flex justify-start cursor-pointer text-gray-700 rounded-md px-2 py-2 my-2">
                             <span className="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
                             <div className="flex-grow font-medium px-2">{_.get(e,'username',"")}</div>
-                            <div className="text-sm font-normal text-gray-500 tracking-wide">Follow</div>
+                            <div className="text-sm font-normal text-gray-500 tracking-wide" onClick={()=> handleFollowRequest(_.get(e,'_id',""))}>Follow</div>
                         </div>
     return (
         <>
@@ -52,7 +68,7 @@ const SearchComponent = (props: Props) => {
                         </div>
                         <input
                             value={param? param: ""}
-                            onChange={(e)=> handleSearchInputChange(e)}
+                            onChange={(e)=> onChange(e)}
                             className="w-full rounded-md bg-gray-200 text-gray-700 leading-tight focus:outline-none py-2 px-2"
                             id="search" type="text" placeholder="Search users" />
                     </div>

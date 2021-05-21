@@ -20,8 +20,8 @@ const useSearchUser = () => {
     const handleDataSetting = (e: any) => {
         setData(e);
     }
-    const searchUser = async (username: string) => {
-
+    const searchUser = async (username: string | null) => {
+        if (username === null) return;
         try {
             setLoading(true);
             const response = await UnicornService.get(`/api/user?filterOn=username&filter=${username}`);

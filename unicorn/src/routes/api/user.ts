@@ -160,14 +160,15 @@ router.post('/follow/:id', auth, async (req: Request, res: Response) => {
 
     //send updated tweet feed
 
-    const newTweets: ITweet[] = await Tweet.find({
+
+    const tweetsOfFollowers: ITweet[] = await Tweet.find({
       'postedBy': {
         $in: [...userFollowers]
       }
-    }).sort(['createdAt', -1]).populate('postedBy').exec();
+    }).sort([['createdAt', -1]]).populate("postedBy", { password: 0 }).exec();
 
 
-    JSONResponse.success(req, res, "Followed", newTweets);
+    JSONResponse.success(req, res, "Followed", tweetsOfFollowers);
   } catch (err) {
     console.log(err);
     JSONResponse.serverError(req, res, "Server Error", {})
