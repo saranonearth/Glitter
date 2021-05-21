@@ -1,38 +1,28 @@
-import { createContext } from 'react'
-import { Document } from 'mongoose'
-
-export interface User extends Document {
-    avatar: string,
-    username: string,
-    email: string,
-    _id: string
-}
-
-export interface Tweet extends Document {
-    tweetText: string,
-    postedBy: string
-}
-
-export interface Store {
-    isAuth: boolean,
-    user: User | null,
-    feed: Array<Tweet> | [],
-    isBusy: boolean
-}
+import create from 'zustand'
 
 
-const Store = createContext<{
-    state: Store;
-    dispatch: React.Dispatch<any>;
-}>({
-    state: {
-        isAuth: false,
-        user: null,
-        feed: [],
-        isBusy: false
-    },
-    dispatch: () => null
-});
+type AuthStore = {
+    isAuth: boolean;
+    user: object | any;
+    token: string;
+    isBusy: boolean;
+    setUser: (user: any) => void;
+    setIsAuth: (value: boolean) => void;
+    setToken: (token: string) => void;
+    setBusy: (value: boolean) => void;
+};
 
+const useStore = create<AuthStore>(set => ({
+    isAuth: false,
+    user: null,
+    token: "",
+    isBusy: false,
+    setUser: (user) => set(() => ({ user })),
+    setIsAuth: (value) => set(state => ({ isAuth: value })),
+    setToken: (token) => set(() => ({ token })),
+    removeUser: () => set(() => ({ user: null })),
+    removeToken: () => set(() => ({ token: "" })),
+    setBusy: (value) => set(() => ({ isBusy: value }))
+}))
 
-export default Store;
+export default useStore;

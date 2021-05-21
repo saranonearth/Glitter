@@ -1,34 +1,31 @@
 import React from 'react'
-import ProfileChip from './components/ProfileChip';
+import { useHistory } from 'react-router-dom';
+import useStore from '../Store/Store';
 
 
-import Tabs from './components/Tabs'
-import GlitInput from "./components/GlitInput"
-import GlitButton from './components/GlitButton';
-import FeedCard from './components/FeedCard';
-interface Props {
-    
-}
 
-const index = (props: Props) => {
+import FeedHolder from './components/FeedHolder';
+
+
+interface Props {}
+
+const Index = (props: Props) => {
+
+    const isAuth = useStore(state=> state.isAuth);
+    const history = useHistory();
+
+
+    React.useEffect(() => {
+        if(!isAuth){
+            history.push('/login')
+        }
+    }, [isAuth])
+
     return (
-        <div className="w-screen bg-gray-100 h-full">
-            <div className="w-5/12 m-auto">
-                <div className="flex justify-center">
-                    <p style={{fontSize:'4em'}}>
-                        🦄
-                    </p>
-                </div>
-                <Tabs />
-                <ProfileChip />
-                <GlitInput />
-                <GlitButton />
-                {
-                    [1,2,3,4,5,6,7,8,9,10].map((e,i)=><FeedCard key={i} />)
-                }
-            </div>
-        </div>
+    <>
+     <FeedHolder />   
+     </>
     )
 }
 
-export default index;
+export default Index;

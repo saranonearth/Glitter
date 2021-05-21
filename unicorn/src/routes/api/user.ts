@@ -161,7 +161,7 @@ router.post('/follow/:id', auth, async (req: Request, res: Response) => {
       'postedBy': {
         $in: [...userFollowers]
       }
-    })
+    }).sort(['createdAt', -1]).populate('postedBy').exec();
 
 
     JSONResponse.success(req, res, "Followed", newTweets);

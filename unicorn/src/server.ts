@@ -2,7 +2,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 import { Response } from 'express'
-
+import cors from 'cors';
 
 //Relative imports
 import Request from './types/Request'
@@ -20,6 +20,7 @@ connectDB();
 app.set("port", process.env.PORT || 5000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 // @route   GET /
 // @desc    Test Base API

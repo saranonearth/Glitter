@@ -81,10 +81,11 @@ router.post(
         { expiresIn: config.get("jwtExpiration") },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });
+          JSONResponse.success(req, res, "", { token });
         }
       );
     } catch (err) {
+      console.log(err)
       JSONResponse.serverError(req, res, "Server Error", {})
     }
   }

@@ -17,3 +17,10 @@
         0%{ left: -100%}
         100%{ left: 150%}
     }
+
+
+@media (max-width:800px){
+  .full-on-mobile{
+    width: 95% !important;
+  }
+}
