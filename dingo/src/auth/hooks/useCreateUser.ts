@@ -1,5 +1,5 @@
 
-//Module imports
+//Module import
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom'
 

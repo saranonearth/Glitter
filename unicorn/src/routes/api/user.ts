@@ -98,25 +98,28 @@ router.post(
 // @route   GET api/user
 // @desc    Get users from usernames
 // @access  Public
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", auth, async (req: Request, res: Response) => {
   try {
 
     const escpQuery = Object.assign({}, ...Object.keys(req.query).map(obKey => {
       return { [obKey]: req.query[obKey] }
     }))
 
+    console.log(escpQuery)
+
     const filter = escpQuery.filter || ''
     const filterOn = escpQuery.filterOn || ''
 
     let filterQuery = {}
     if (filter.length > 0) {
+      const regx = new RegExp(filter, 'i');
       if (filterOn.length > 0) {
         filterQuery = {
-          [filterOn]: filter
+          [filterOn]: regx
         }
       } else {
         filterQuery = {
-          username: filter
+          username: regx
         }
       }
     }

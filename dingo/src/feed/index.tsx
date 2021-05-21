@@ -11,7 +11,7 @@ interface Props {}
 
 const Index = (props: Props) => {
 
-    const isAuth = useStore(state=> state.isAuth);
+    const [isAuth, setLogout, user] = useStore(state=> [state.isAuth, state.setLogout, state.user]);
     const history = useHistory();
 
 
@@ -21,9 +21,22 @@ const Index = (props: Props) => {
         }
     }, [isAuth])
 
+
+    /**
+     * @description Removes auth token from local storage and manipulates global store
+     * @return void
+     */
+    const logout = () => {
+        localStorage.removeItem('x-glitter');
+        setLogout();
+    }
+
     return (
     <>
-     <FeedHolder />   
+     <FeedHolder 
+        logout={logout}
+        user={user}
+      />   
      </>
     )
 }
