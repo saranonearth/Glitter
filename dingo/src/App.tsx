@@ -15,14 +15,15 @@ import useGetUser from './auth/hooks/useGetUser'
 //Style
 import 'react-toastify/dist/ReactToastify.css';
 import useStore from './Store/Store';
+import useFetchGlits from './feed/hooks/useFetchGlits';
 
 
 
 
 const App: React.FC = () => {
   const [getUser] = useGetUser();
-  const [isBusy] = useStore(state=> [state.isBusy])
-
+  const [isBusy,] = useStore(state=> [state.isBusy, state.isAuth])
+  const [_,getFeed] = useFetchGlits();
 
 
 
@@ -30,6 +31,10 @@ const App: React.FC = () => {
       getUser();
   }, [localStorage.getItem('x-glitter')]);
 
+  React.useEffect(()=>{
+
+        getFeed();
+    },[])
 
 
   if(isBusy) return <AppLoader />

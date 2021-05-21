@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body{
+  background-color: #F3F4F6;
+}
+
    [data-placeholder]::after {
         content: " ";
         box-shadow: 0 0 50px 9px rgba(254,254,254);

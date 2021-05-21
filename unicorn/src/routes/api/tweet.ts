@@ -10,7 +10,7 @@ import mongoose from "mongoose"
 
 //Relative imports
 import { ITweet } from './../../models/Tweet';
-import { IUser } from './../../models/User';
+import User, { IUser } from './../../models/User';
 import auth from "../../middleware/auth";
 import Request from "../../types/Request";
 import Tweet from '../../models/Tweet';
@@ -29,29 +29,31 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
     try {
 
-        let followers: Array<mongoose.Types.ObjectId> = req.body.followers;
 
-        if (!followers) {
-            return JSONResponse.badRequest(req, res, "", { errors: [{ error: "Please provide followers" }] });
+        const user: IUser = await User.findOne({ _id: req.userId });
+
+
+        if (!user) {
+            return JSONResponse.badRequest(req, res, "", { errors: [{ error: "User not found" }] });
         }
 
         //adding current user to have the user's tweets too in the feed
+        let followers = user.followers;
+
         followers.push(mongoose.Types.ObjectId(req.userId));
-
-
 
         const tweetsOfFollowers: ITweet[] = await Tweet.find({
             'postedBy': {
                 $in: [...followers]
             }
-        })
+        }).sort([['createdAt', -1]]).populate("postedBy", { password: 0 }).exec();
 
-        console.log(tweetsOfFollowers);
 
         return JSONResponse.success(req, res, "", tweetsOfFollowers);
 
 
     } catch (err) {
+        console.log(err)
         JSONResponse.serverError(req, res, "Server Error", {})
     }
 });
@@ -74,14 +76,13 @@ router.post(
 
         const { tweetText } = req.body;
         try {
-
+            console.log(req.userId)
             const tweet: ITweet = new Tweet({
                 tweetText,
                 postedBy: req.userId
-            })
+            });
 
             await tweet.save();
-
 
             return JSONResponse.success(req, res, "", tweet);
 

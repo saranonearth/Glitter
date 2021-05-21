@@ -1,12 +1,15 @@
-import React from 'react'
 
 
+interface Props{
+    handlePostGlit: ()=> void;
+}
 
-const GlitButton = () => {
+
+const GlitButton = ({handlePostGlit}: Props) => {
     return (
         <div className="flex items-center w-full mt-1">
 
-            <button style={{backgroundColor:"rgba(75,85,99,1)", color:"#fff", fontWeight:500}} className="bg-gray w-full  text-white font-bold rounded border-b-2 border-gray-400 shadow-md py-2 px-6 inline-flex items-center hover:bg-gray-300">
+            <button onClick={handlePostGlit} style={{backgroundColor:"rgba(75,85,99,1)", color:"#fff", fontWeight:500}} className="bg-gray w-full  text-white font-bold rounded border-b-2 border-gray-400 shadow-md py-2 px-6 inline-flex items-center hover:bg-gray-300">
         
         <div className="flex justify-center w-full">
          <span className="mr-2">Glitttt it</span>

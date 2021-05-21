@@ -135,7 +135,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
   }
 })
 
-// @route   POST api/user/follow?:id
+// @route   POST api/user/follow/:id
 // @param   id: id of the user to be followed
 // @desc    Register user given their username,email and password, returns the token upon successful registration
 // @access  private
