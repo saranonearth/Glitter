@@ -11,6 +11,7 @@ import Discover from '../../discover'
 import usePostGlit from '../hooks/usePostGlit';
 import useStore from '../../Store/Store';
 import _ from 'lodash';
+import { toast } from 'react-toastify';
 
 
 
@@ -28,19 +29,19 @@ export const TABS = {
 const FeedHolder = ({logout,user}: Props) => {
 
 
-    //------------------
-    //----Data containers------
-    //------------------
+    //----------------------
+    //----Data containers---
+    //----------------------
 
     const [tab,setTab] = React.useState(TABS.FEED);
-    const [glit,setGlit] = React.useState("");
+    const [glit,setGlit] = React.useState<string>("");
     const [postGlit] = usePostGlit()
     const [glits] = useStore(state=> [state.glits])
     
 
-    //------------------
-    //----Handlers------
-    //------------------
+    //-----------------------
+    //----Handlers-----------
+    //-----------------------
 
     /**
      * @description changes the tab value
@@ -60,7 +61,10 @@ const FeedHolder = ({logout,user}: Props) => {
     }
 
     const handlePostGlit = () => {
-
+        if(glit.toString().length===0) {
+            toast.dark("Come on! Don't feel shy 😏");
+            return;}
+        
         postGlit({tweetText: glit})
         setGlit(""); //Resetting the input component
     }
