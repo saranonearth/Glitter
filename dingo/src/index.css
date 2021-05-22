@@ -24,16 +24,37 @@ body{
 
     .flex-col-h{
       display: flex;
-      flex-direction: row;
+      flex-direction: col !important;
+      width: 100%;
+      justify-content: space-between;
     }
 
+    .tab{
+
+      padding: 20px;
+      text-align: center;
+      color: rgb(134, 134, 134);
+    }
+
+    .tab:hover{
+      cursor: pointer;
+    }
+
+    .center-h{
+      text-align: center;
+    }
+    .tab-holder{
+      width: 50%;
+    }
+    .tab-selected {
+      font-weight: 600;
+      color: #333;
+    }
 @media (max-width:800px){
   .full-on-mobile{
     width: 95% !important;
   }
-  .flex-col-h{
-    flex-direction: column !important;
-    width: 100%;
 
-  }
+
+
 }

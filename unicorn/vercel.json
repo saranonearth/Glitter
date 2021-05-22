@@ -1,11 +1,11 @@
 
 {
   "version": 2,
-  "name": "hyuga",
+  "name": "unicorn",
   "builds": [
-    { "src": "app.js", "use": "@vercel/node" }
+    { "src": "dist/src/server.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/app.js" }
+    { "src": "/(.*)", "dest": "dist/src/server.js" }
   ]
 }

@@ -10,13 +10,18 @@ interface Props {
 const Tabs = ({handleTabChange, selectedTab}: Props) => {
     return React.useMemo(()=>(
         <div className="bg-white">
-        <nav className="flex-col-h">
-        <button onClick={()=> handleTabChange(TABS.FEED)}  className={selectedTab===TABS.FEED? "text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12 text-gray-500 border-b-2 font-medium border-gray-500":"text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12"}>
+        <div className="flex-col-h">
+        <div className="tab-holder">
+        <div onClick={()=> handleTabChange(TABS.FEED)}  className={selectedTab===TABS.FEED? "tab tab-selected":"tab"}>
             Feed
-        </button><button onClick={()=> handleTabChange(TABS.DISCOVER)}  className={selectedTab===TABS.DISCOVER? "text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12 text-gray-500 border-b-2 font-medium border-gray-500":"text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12"}>
+        </div>
+        </div>
+        <div className="tab-holder">
+            <div onClick={()=> handleTabChange(TABS.DISCOVER)}  className={selectedTab===TABS.DISCOVER? "tab tab-selected":"tab"}>
             Discover
-        </button>
-    </nav>
+        </div>
+        </div>
+    </div>
     </div>
     ),[selectedTab])
 }
