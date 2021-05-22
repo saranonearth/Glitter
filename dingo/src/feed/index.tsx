@@ -5,6 +5,7 @@ import useStore from '../Store/Store';
 
 
 import FeedHolder from './components/FeedHolder';
+import useFetchGlits from './hooks/useFetchGlits';
 
 
 interface Props {}
@@ -13,13 +14,22 @@ const Index = (props: Props) => {
 
     const [isAuth, setLogout, user] = useStore(state=> [state.isAuth, state.setLogout, state.user]);
     const history = useHistory();
-
+    const [getFeed] = useFetchGlits();
 
     React.useEffect(() => {
         if(!isAuth){
             history.push('/login')
         }
-    }, [isAuth])
+    }, [isAuth]);
+
+    React.useEffect(()=>{
+
+        getFeed();
+
+        
+    
+    },[])
+
 
 
     /**

@@ -1,7 +1,6 @@
 
 //Module import
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom'
 
 //Relative imports
 import { UnicornService } from '../../services/UnicornService';
@@ -15,11 +14,11 @@ type GlitType = {
 
 const usePostGlit = () => {
 
-    const [user, glits, setGlits] = useStore(state => [state.user, state.glits, state.setGlits]);
-    const history = useHistory();
+    const [glits, setGlits] = useStore(state => [state.glits, state.setGlits]);
+
 
     const postGlit = async (data: GlitType) => {
-        console.log(data)
+
         const config = {
             headers: {
                 "content-type": "application/json"
@@ -29,7 +28,7 @@ const usePostGlit = () => {
             tweetText: data.tweetText
         }
 
-        console.log(body)
+
         try {
 
             const response = await UnicornService.post('/api/tweet', JSON.stringify(body), config);
@@ -37,7 +36,7 @@ const usePostGlit = () => {
             if (response.status === 200) {
 
                 let newGlits = glits;
-                newGlits = (glits) ? [{ ...response.data.data, postedBy: { username: user.username, avatar: user.avatar } }, ...glits] : null;
+                newGlits = (glits) ? [{ ...response.data.data }, ...glits] : null;
                 setGlits(newGlits)
                 toast.dark("Glit posted 🎉")
 

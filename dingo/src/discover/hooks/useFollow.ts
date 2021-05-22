@@ -15,7 +15,7 @@ import { User } from '../../types';
 
 const useFollow = () => {
 
-    const [user, setUser] = useStore(state => [state.user, state.setUser])
+    const [user, setUser, setGlits] = useStore(state => [state.user, state.setUser, state.setGlits])
     const followUser = async (id: string) => {
 
         try {
@@ -24,6 +24,7 @@ const useFollow = () => {
 
             if (response.status === 200) {
                 toast.dark("Followed");
+                setGlits(response.data.data);
                 const newUser: User = { ...user, followers: [id, ...user.followers] }
                 setUser(newUser);
             }

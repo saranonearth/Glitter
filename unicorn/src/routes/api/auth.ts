@@ -22,7 +22,11 @@ const router: Router = Router();
 router.get("/", auth, async (req: Request, res: Response) => {
   try {
     const user: IUser = await User.findById(req.userId).select("-password");
-    res.json(user);
+    if (!user) {
+      return JSONResponse.badRequest(req, res, "", { errors: [] });
+    }
+
+    return res.json(user);
   } catch (err) {
     JSONResponse.serverError(req, res, "Server Error", {})
   }

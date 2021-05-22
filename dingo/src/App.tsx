@@ -10,31 +10,55 @@ import Signup from './auth/Signup';
 import Home from './components/Home';
 import AppLoader from './components/Loader';
 import useGetUser from './auth/hooks/useGetUser'
-
+import socketIOClient from "socket.io-client";
+import _ from 'lodash'
 
 //Style
 import 'react-toastify/dist/ReactToastify.css';
 import useStore from './Store/Store';
 import useFetchGlits from './feed/hooks/useFetchGlits';
+import { UNICORN_SERVICE } from './config';
+
 
 
 
 
 const App: React.FC = () => {
-  const [getUser] = useGetUser();
-  const [isBusy,] = useStore(state=> [state.isBusy, state.isAuth])
-  const [_,getFeed] = useFetchGlits();
+  const [_,getUser] = useGetUser();
+  const [isBusy, isAuth, user, glits, setGlits] = useStore(state=> [state.isBusy, state.isAuth, state.user,state.glits, state.setGlits])
+
 
 
 
   React.useEffect(() => {
-      getUser();
-  }, [localStorage.getItem('x-glitter')]);
 
-  React.useEffect(()=>{
 
-        getFeed();
-    },[])
+        getUser();
+    
+
+  }, []);
+
+
+
+  React.useEffect(() => {
+    const socket = socketIOClient(UNICORN_SERVICE);
+    socket.on("GLITTED", (data)=>{
+          console.log(data);
+        console.log(user);
+      if(user && isAuth){
+    
+        const tweetUserId = data.postedBy._id || "";
+
+        if(user.followers.find((id:string)=> id.toString() === tweetUserId.toString())){
+    
+          const newGlits: any = (glits!==null)?[data,...glits]:[data];
+          setGlits(newGlits);
+        }
+
+      }
+    })
+
+  }, []);
 
 
   if(isBusy) return <AppLoader />

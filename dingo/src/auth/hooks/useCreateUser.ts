@@ -19,7 +19,7 @@ type CredentialsType = {
 const useCreateUser = () => {
 
     const [setBusy, setIsAuth] = useStore(state => [state.setBusy, state.setIsAuth]);
-    const [getUser] = useGetUser();
+    const [_, getUser] = useGetUser();
     const history = useHistory();
 
     const initiateSignUp = async (credentials: CredentialsType) => {

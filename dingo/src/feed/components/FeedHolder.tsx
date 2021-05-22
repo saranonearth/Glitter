@@ -11,9 +11,7 @@ import Discover from '../../discover'
 import usePostGlit from '../hooks/usePostGlit';
 import useStore from '../../Store/Store';
 import _ from 'lodash';
-import useFetchGlits from '../hooks/useFetchGlits';
-import AppLoader from '../../components/Loader';
-import Loader from 'react-loader-spinner';
+
 
 
 
@@ -37,10 +35,7 @@ const FeedHolder = ({logout,user}: Props) => {
     const [tab,setTab] = React.useState(TABS.FEED);
     const [glit,setGlit] = React.useState("");
     const [postGlit] = usePostGlit()
-    const [glits, isBusy] = useStore(state=> [state.glits, state.isBusy])
- 
-
-
+    const [glits] = useStore(state=> [state.glits])
     
 
     //------------------
@@ -65,10 +60,11 @@ const FeedHolder = ({logout,user}: Props) => {
     }
 
     const handlePostGlit = () => {
-        console.log(glit);
+
         postGlit({tweetText: glit})
+        setGlit(""); //Resetting the input component
     }
-    console.log(glits);
+
     return (
 
         <div className="w-screen bg-gray-100 h-full">
@@ -84,9 +80,10 @@ const FeedHolder = ({logout,user}: Props) => {
                 <GlitButton handlePostGlit={handlePostGlit} />
                
                 {tab===TABS.FEED? <>
-                    {glits!==null? glits.length>0?
-                    glits.map((data)=><FeedCard key={_.get(data,"_id",Math.random())} data={data} />):
-                     <p className="text-grey-200">No glits to show. Post one 🍭</p>: <div className="flex justify-center"><Loader type={"Puff"} color={"#28292b"} width={25} /></div>}
+                    { glits&&glits.length>0 ?
+                    glits?.map((data)=><FeedCard key={_.get(data,"_id",Math.random())} data={data} />):
+                     <p className=" text-center mt-10 text-lg text-gray-400">No glits to show. Post one! 🍭</p>
+                    }
                 </>
                 : <Discover />}
             </div>

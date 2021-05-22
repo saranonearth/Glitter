@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react'
 import Loader from 'react-loader-spinner';
+import useStore from '../../Store/Store';
 
 import { User } from '../../types';
 import useFollow from '../hooks/useFollow';
@@ -14,6 +15,7 @@ const SearchComponent = (props: Props) => {
 
     const [param, setParam] = React.useState<string | null>("");
     const [data,loading, searchUser, handleDataSetting] = useSearchUser();
+    const [user] = useStore(state=> [state.user])
     const [follow] = useFollow();
 
 
@@ -39,15 +41,30 @@ const SearchComponent = (props: Props) => {
 
     const handleFollowRequest = (id: string) => {
         if(id === "") return;
-        console.log("here", id);
         follow(id)
+    }       
+
+
+    /**
+     * @description checks whether the user is already being followed
+     * @param id Id of the user
+     */
+    const isBeingFollowed = (id: string)=>{
+
+        if(user && user.followers.find((_id:string) => _id.toString() === id.toString())){
+            return false;
+        }
+        if(user && user._id === id){
+            return false;
+        }
+        return true;
     }
 
 
     const renderStrip = (e:User) =>   <div key={_.get(e,'_id',Math.random())} className="flex justify-start cursor-pointer text-gray-700 rounded-md px-2 py-2 my-2">
                             <span className="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
                             <div className="flex-grow font-medium px-2">{_.get(e,'username',"")}</div>
-                            <div className="text-sm font-normal text-gray-500 tracking-wide" onClick={()=> handleFollowRequest(_.get(e,'_id',""))}>Follow</div>
+                           { isBeingFollowed(_.get(e,'_id',"")) && <div className="text-sm font-normal text-gray-500 tracking-wide" onClick={()=> handleFollowRequest(_.get(e,'_id',""))}>Follow</div>}
                         </div>
     return (
         <>

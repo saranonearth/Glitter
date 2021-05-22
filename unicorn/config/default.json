@@ -1,0 +1,5 @@
+{
+  "mongoURI": "mongodb+srv://saran:s123@glitter.fnl0a.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "jwtSecret": "jwtSecretToken",
+  "jwtExpiration": 360000
+}

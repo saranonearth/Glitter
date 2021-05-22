@@ -1,4 +1,6 @@
 import _ from 'lodash'
+import React from 'react'
+
 
 import { User } from '../../types'
 
@@ -9,7 +11,7 @@ interface Props {
 
 const ProfileChip = ({logout,user}: Props) => {
     const avatar = _.get(user,'avatar',"");
-    return (
+    return React.useMemo(()=>(
         <div className="w-full">
          <div className="cursor-pointer hover:shadow-lg flex flex-col items-center justify-end bg-green-300 rounded-lg relative w-full">
          <div className="h-16 w-16 z-10 shadow-md  bg-white rounded-full relative" style={{bottom: "35px",backgroundImage: `url(${avatar})`, backgroundSize:'contain'}}></div>
@@ -19,7 +21,7 @@ const ProfileChip = ({logout,user}: Props) => {
         </div>
         </div>     
         </div>
-    )
+    ),[user])
 }
 
 export default ProfileChip

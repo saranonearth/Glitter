@@ -22,6 +22,8 @@ import JSONResponse from '../../util/ResponseHandler';
 
 const router: Router = Router();
 
+const WSS_TWEET = "GLITTED";
+
 // @route   GET api/tweet
 // @desc    Get tweets of a user
 // @access  Private
@@ -69,6 +71,7 @@ router.post(
         check("tweetText", "Please include a valid tweet data").not().isEmpty()
     ],
     async (req: Request, res: Response) => {
+        const io = req.app.get('socketio');
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return JSONResponse.badRequest(req, res, "", { errors: errors.array() });
@@ -77,16 +80,22 @@ router.post(
         const { tweetText } = req.body;
         try {
             console.log(req.userId)
-            const tweet: ITweet = new Tweet({
+            let tweet: ITweet = new Tweet({
                 tweetText,
                 postedBy: req.userId
             });
 
             await tweet.save();
 
+            tweet = await tweet.populate('postedBy').execPopulate()
+
+
+            io.emit(WSS_TWEET, tweet);
+
             return JSONResponse.success(req, res, "", tweet);
 
         } catch (err) {
+            console.log(err)
             JSONResponse.serverError(req, res, "Server Error", {})
         }
     }

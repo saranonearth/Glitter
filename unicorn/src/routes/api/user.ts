@@ -150,6 +150,10 @@ router.post('/follow/:id', auth, async (req: Request, res: Response) => {
       return JSONResponse.badRequest(req, res, "", { errors: [{ error: "User doesn't exist" }] });
     }
 
+    if (user.followers.find(e => e.toHexString() === toFollow.toString())) {
+      return JSONResponse.badRequest(req, res, "", { errors: [{ error: "User is already being followed" }] })
+    }
+
     let userFollowers = user.followers;
     userFollowers = [mongoose.Types.ObjectId(toFollow), ...userFollowers];
 
@@ -160,10 +164,9 @@ router.post('/follow/:id', auth, async (req: Request, res: Response) => {
 
     //send updated tweet feed
 
-
     const tweetsOfFollowers: ITweet[] = await Tweet.find({
       'postedBy': {
-        $in: [...userFollowers]
+        $in: [...userFollowers, req.userId]
       }
     }).sort([['createdAt', -1]]).populate("postedBy", { password: 0 }).exec();
 

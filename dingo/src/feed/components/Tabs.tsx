@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { TABS } from './FeedHolder'
 
 interface Props {
@@ -6,9 +8,9 @@ interface Props {
 }
 
 const Tabs = ({handleTabChange, selectedTab}: Props) => {
-    return (
+    return React.useMemo(()=>(
         <div className="bg-white">
-        <nav className="flex flex-col sm:flex-row">
+        <nav className="flex-col-h">
         <button onClick={()=> handleTabChange(TABS.FEED)}  className={selectedTab===TABS.FEED? "text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12 text-gray-500 border-b-2 font-medium border-gray-500":"text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12"}>
             Feed
         </button><button onClick={()=> handleTabChange(TABS.DISCOVER)}  className={selectedTab===TABS.DISCOVER? "text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12 text-gray-500 border-b-2 font-medium border-gray-500":"text-gray-600 py-4 px-6 block hover:text-gray-500 focus:outline-none w-6/12"}>
@@ -16,7 +18,7 @@ const Tabs = ({handleTabChange, selectedTab}: Props) => {
         </button>
     </nav>
     </div>
-    )
+    ),[selectedTab])
 }
 
 export default Tabs

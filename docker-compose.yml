@@ -8,20 +8,10 @@ services:
     container_name: unicorn
     ports:
       - "5000:5000"
-    environment:
-      - REDIS_URL=mushi://cache
-    depends_on:
-      - mushi
     volumes:
       - ./unicorn:/opt/app
     networks:
       - app-network
-  # redis
-  mushi:
-    image: redis
-    container_name: mushi
-    ports:
-      - 6379:6379
   # Client
   dingo:
     build:

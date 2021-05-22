@@ -22,9 +22,18 @@ body{
         100%{ left: 150%}
     }
 
+    .flex-col-h{
+      display: flex;
+      flex-direction: row;
+    }
 
 @media (max-width:800px){
   .full-on-mobile{
     width: 95% !important;
+  }
+  .flex-col-h{
+    flex-direction: column !important;
+    width: 100%;
+
   }
 }
