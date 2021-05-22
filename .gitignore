@@ -1,3 +1,5 @@
 unicorn/node_modules
 dingo/.gitignore
 dingo/node_modules
+dingo/build
+unicorn/dist
