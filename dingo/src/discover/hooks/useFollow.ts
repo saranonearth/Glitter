@@ -23,7 +23,7 @@ const useFollow = () => {
             const response = await UnicornService.post(`/api/user/follow/${id}`);
 
             if (response.status === 200) {
-                toast.dark("Followed");
+                toast.dark("Followed 🥳");
                 setGlits(response.data.data);
                 const newUser: User = { ...user, followers: [id, ...user.followers] }
                 setUser(newUser);

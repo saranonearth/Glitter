@@ -29,7 +29,7 @@ router.get("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const user = yield User_1.default.findOne({ _id: req.userId });
         if (!user) {
-            return ResponseHandler_1.default.badRequest(req, res, "", { errors: [{ error: "User not found" }] });
+            return ResponseHandler_1.default.badRequest(req, res, "", { errors: [{ msg: "User not found" }] });
         }
         //adding current user to have the user's tweets too in the feed
         let followers = user.followers;

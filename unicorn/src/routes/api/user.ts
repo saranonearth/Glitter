@@ -150,8 +150,8 @@ router.post('/follow/:id', auth, async (req: Request, res: Response) => {
       return JSONResponse.badRequest(req, res, "", { errors: [{ error: "User doesn't exist" }] });
     }
 
-    if (user.followers.find(e => e.toHexString() === toFollow.toString())) {
-      return JSONResponse.badRequest(req, res, "", { errors: [{ error: "User is already being followed" }] })
+    if (user.followers.find(e => e.toString() === toFollow.toString())) {
+      return JSONResponse.badRequest(req, res, "", { errors: [{ msg: "User is already being followed" }] })
     }
 
     let userFollowers = user.followers;

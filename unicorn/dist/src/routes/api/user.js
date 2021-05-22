@@ -124,8 +124,8 @@ router.post('/follow/:id', auth_1.default, (req, res) => __awaiter(void 0, void 
         if (!user) {
             return ResponseHandler_1.default.badRequest(req, res, "", { errors: [{ error: "User doesn't exist" }] });
         }
-        if (user.followers.find(e => e.toHexString() === toFollow.toString())) {
-            return ResponseHandler_1.default.badRequest(req, res, "", { errors: [{ error: "User is already being followed" }] });
+        if (user.followers.find(e => e.toString() === toFollow.toString())) {
+            return ResponseHandler_1.default.badRequest(req, res, "", { errors: [{ msg: "User is already being followed" }] });
         }
         let userFollowers = user.followers;
         userFollowers = [mongoose_1.default.Types.ObjectId(toFollow), ...userFollowers];

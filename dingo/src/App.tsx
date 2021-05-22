@@ -47,7 +47,7 @@ const App: React.FC = () => {
         console.log(user);
       if(user && isAuth){
     
-        const tweetUserId = data.postedBy._id || "";
+        const tweetUserId = data?.postedBy?._id || "";
 
         if(user.followers.find((id:string)=> id.toString() === tweetUserId.toString())){
     
@@ -58,7 +58,7 @@ const App: React.FC = () => {
       }
     })
 
-  }, []);
+  }, [user]);
 
 
   if(isBusy) return <AppLoader />

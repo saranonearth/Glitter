@@ -36,7 +36,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
 
         if (!user) {
-            return JSONResponse.badRequest(req, res, "", { errors: [{ error: "User not found" }] });
+            return JSONResponse.badRequest(req, res, "", { errors: [{ msg: "User not found" }] });
         }
 
         //adding current user to have the user's tweets too in the feed
